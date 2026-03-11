@@ -24,7 +24,7 @@ Create a GitHub repository for my AI Thunderbolt Pro project with:
 
 **Copy these commands (run in terminal):**
 
-Replace the placeholder in angle brackets with your actual GitHub username before running the remote setup command.
+Replace the placeholder in angle brackets with your actual GitHub username before running these commands.
 
 ```bash
 cd /mnt/okcomputer/output/app
@@ -106,8 +106,8 @@ Show me which files to update and what changes to make.
 ## ✅ DONE!
 
 Your AI Thunderbolt Pro is now live on:
-- **Frontend**: <your-vercel-url>
-- **Backend**: <your-railway-url>
+- **Frontend**: <YOUR_VERCEL_URL>
+- **Backend**: <YOUR_RAILWAY_URL>
 
 ---
 
@@ -122,18 +122,19 @@ Generate complete code for frontend, backend, and integration.
 
 ### Fix Bug
 
-````text
+```text
 Fix this error: [ERROR_MESSAGE]
 File: [FILE_PATH]
-Code: ```[CODE]```
-````
+Code:
+[PASTE_CODE_HERE]
+```
 
 ### Optimize
 
-````text
+```text
 Optimize this code for better performance:
-```[CODE]```
-````
+[PASTE_CODE_HERE]
+```
 
 ### Deploy
 
