@@ -24,7 +24,7 @@ Create a GitHub repository for my AI Thunderbolt Pro project with:
 
 **Copy these commands (run in terminal):**
 
-Replace the ALL_CAPS placeholder with your actual GitHub username before running these commands.
+Replace the ALL_CAPS placeholders with your actual GitHub username before running these commands.
 
 ```bash
 cd /mnt/okcomputer/output/app
@@ -91,9 +91,9 @@ railway up
 
 ## STEP 5: Connect Everything
 
-**Copy this into Copilot Chat:**
-
 Replace the ALL_CAPS placeholders `YOUR_VERCEL_URL` and `YOUR_RAILWAY_URL` with your deployed app URLs, for example `https://your-app.vercel.app` and `https://your-service.up.railway.app`.
+
+**Copy this into Copilot Chat:**
 
 ```text
 My frontend is at: YOUR_VERCEL_URL
