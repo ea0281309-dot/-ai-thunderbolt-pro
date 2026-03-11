@@ -93,7 +93,7 @@ railway up
 
 **Copy this into Copilot Chat:**
 
-Replace `YOUR_VERCEL_URL` and `YOUR_RAILWAY_URL` with your deployed app URLs, for example `https://your-app.vercel.app` and `https://your-service.up.railway.app`.
+Replace the ALL_CAPS placeholders `YOUR_VERCEL_URL` and `YOUR_RAILWAY_URL` with your deployed app URLs, for example `https://your-app.vercel.app` and `https://your-service.up.railway.app`.
 
 ```text
 My frontend is at: YOUR_VERCEL_URL
@@ -118,30 +118,30 @@ Your AI Thunderbolt Pro is now live on:
 ### Add Feature
 
 ```text
-Add [FEATURE] to my AI Thunderbolt Pro that does [DESCRIPTION].
+Add FEATURE to my AI Thunderbolt Pro that does DESCRIPTION.
 Generate complete code for frontend, backend, and integration.
 ```
 
 ### Fix Bug
 
 ```text
-Fix this error: [ERROR_MESSAGE]
-File: [FILE_PATH]
+Fix this error: ERROR_MESSAGE
+File: FILE_PATH
 Code:
-[PASTE_CODE_HERE]
+PASTE_CODE_HERE
 ```
 
 ### Optimize
 
 ```text
 Optimize this code for better performance:
-[PASTE_CODE_HERE]
+PASTE_CODE_HERE
 ```
 
 ### Deploy
 
 ```text
-Deploy my [FRONTEND/BACKEND] to [PLATFORM] with these settings: [SETTINGS]
+Deploy my FRONTEND_OR_BACKEND to PLATFORM with these settings: SETTINGS
 ```
 
 ---
