@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="api-base-url" content="__API_BASE_URL__" />
+    <title>AI Thunderbolt Pro</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero">
+        <p class="eyebrow">AI-powered calling service</p>
+        <h1>AI Thunderbolt Pro</h1>
+        <p class="summary">
+          Production readiness dashboard for the live frontend and Railway backend.
+        </p>
+      </section>
+
+      <section class="status-card">
+        <div>
+          <p class="label">Backend URL</p>
+          <p class="value" id="api-url">Loading…</p>
+        </div>
+        <div>
+          <p class="label">Health status</p>
+          <p class="value" id="status-text">Checking…</p>
+        </div>
+        <div>
+          <p class="label">Response timestamp</p>
+          <p class="value" id="status-timestamp">—</p>
+        </div>
+        <button id="refresh-button" type="button">Check backend</button>
+      </section>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
