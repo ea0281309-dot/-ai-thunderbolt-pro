@@ -24,7 +24,7 @@ Create a GitHub repository for my AI Thunderbolt Pro project with:
 
 **Copy these commands (run in terminal):**
 
-Replace `YOUR_USERNAME` with your actual GitHub username before running the remote setup command.
+Replace the placeholder in angle brackets with your actual GitHub username before running the remote setup command.
 
 ```bash
 cd /mnt/okcomputer/output/app
@@ -33,7 +33,7 @@ git init
 git add .
 git commit -m "Initial commit: AI Thunderbolt Pro v1.0"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/ai-thunderbolt-pro.git
+git remote add origin https://github.com/<YOUR_GITHUB_USERNAME>/ai-thunderbolt-pro.git
 git push -u origin main
 ```
 
@@ -94,8 +94,8 @@ railway up
 **Copy this into Copilot Chat:**
 
 ```text
-My frontend is at: [YOUR_VERCEL_URL]
-My backend is at: [YOUR_RAILWAY_URL]
+My frontend is at: <YOUR_VERCEL_URL>
+My backend is at: <YOUR_RAILWAY_URL>
 
 Update my frontend API calls from localhost:3001 to the production backend.
 Show me which files to update and what changes to make.
@@ -106,8 +106,8 @@ Show me which files to update and what changes to make.
 ## ✅ DONE!
 
 Your AI Thunderbolt Pro is now live on:
-- **Frontend**: [your-vercel-url]
-- **Backend**: [your-railway-url]
+- **Frontend**: <your-vercel-url>
+- **Backend**: <your-railway-url>
 
 ---
 
