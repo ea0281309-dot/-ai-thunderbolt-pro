@@ -1,0 +1,2 @@
+# Railway will use this file to determine how to run the app
+web: node src/index.js
