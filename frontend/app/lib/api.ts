@@ -20,6 +20,12 @@ export interface EmotionAnalysis {
   confidence: number;
 }
 
+export interface DeploymentInfo {
+  frontend: { platform: string; url: string | null };
+  backend: { platform: string; url: string | null };
+  instructions: { railway: string; vercel: string };
+}
+
 export interface HealthStatus {
   status: string;
   service: string;
@@ -43,6 +49,8 @@ async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
 
 export const api = {
   health: () => apiFetch<HealthStatus>('/health'),
+
+  getDeploymentInfo: () => apiFetch<DeploymentInfo>('/api/deployment'),
 
   getCalls: () => apiFetch<{ calls: Call[]; total: number }>('/api/calls'),
 

@@ -8,6 +8,7 @@ const rateLimit = require('express-rate-limit');
 const healthRouter = require('./routes/health');
 const callsRouter = require('./routes/calls');
 const analysisRouter = require('./routes/analysis');
+const deploymentRouter = require('./routes/deployment');
 const { errorHandler } = require('./middleware/errorHandler');
 
 const app = express();
@@ -57,6 +58,7 @@ app.use('/api/', limiter);
 app.use('/health', healthRouter);
 app.use('/api/calls', callsRouter);
 app.use('/api/analysis', analysisRouter);
+app.use('/api/deployment', deploymentRouter);
 
 // 404 handler
 app.use((req, res) => {

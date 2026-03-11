@@ -76,6 +76,7 @@ npm run dev                   # http://localhost:3000
 | Method | Path | Description |
 |--------|------|-------------|
 | `GET` | `/health` | Service health check |
+| `GET` | `/api/deployment` | Live deployment URLs |
 | `GET` | `/api/calls` | List all calls |
 | `POST` | `/api/calls` | Initiate a new AI call |
 | `GET` | `/api/calls/:id` | Get call details |
@@ -84,6 +85,22 @@ npm run dev                   # http://localhost:3000
 | `POST` | `/api/analysis/emotion` | Analyze emotion from text |
 | `POST` | `/api/analysis/sentiment` | Sentiment analysis |
 | `POST` | `/api/analysis/call-quality` | Call quality metrics |
+
+### Deployment URL Response
+
+```json
+{
+  "frontend": { "platform": "Vercel", "url": "https://your-app.vercel.app" },
+  "backend":  { "platform": "Railway", "url": "https://your-app.up.railway.app" },
+  "instructions": { ... }
+}
+```
+
+To see your live URLs, open the **🔗 Deployment URLs** tab in the dashboard, or run:
+
+```bash
+curl https://your-backend.up.railway.app/api/deployment
+```
 
 ### Health Check Response
 

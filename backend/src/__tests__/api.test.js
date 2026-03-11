@@ -83,3 +83,15 @@ describe('404 handler', () => {
     expect(res.body.error).toBe('Route not found');
   });
 });
+
+describe('Deployment endpoint', () => {
+  it('GET /api/deployment returns platform info', async () => {
+    const res = await request(app).get('/api/deployment');
+    expect(res.status).toBe(200);
+    expect(res.body.frontend).toBeDefined();
+    expect(res.body.backend).toBeDefined();
+    expect(res.body.frontend.platform).toBe('Vercel');
+    expect(res.body.backend.platform).toBe('Railway');
+    expect(res.body.instructions).toBeDefined();
+  });
+});

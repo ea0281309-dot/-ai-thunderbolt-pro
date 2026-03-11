@@ -6,13 +6,14 @@ import NewCallForm from './components/NewCallForm';
 import CallList from './components/CallList';
 import EmotionAnalyzer from './components/EmotionAnalyzer';
 import StatusBar from './components/StatusBar';
+import DeploymentURLs from './components/DeploymentURLs';
 
 export default function Home() {
   const [calls, setCalls] = useState<Call[]>([]);
   const [health, setHealth] = useState<HealthStatus | null>(null);
   const [healthError, setHealthError] = useState('');
   const [healthLoading, setHealthLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'calls' | 'analyze'>('calls');
+  const [activeTab, setActiveTab] = useState<'calls' | 'analyze' | 'deployment'>('calls');
 
   const fetchHealth = useCallback(async () => {
     try {
@@ -134,6 +135,16 @@ export default function Home() {
           >
             🧠 Analyze Emotion
           </button>
+          <button
+            onClick={() => setActiveTab('deployment')}
+            className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors ${
+              activeTab === 'deployment'
+                ? 'bg-green-600 text-white'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+            }`}
+          >
+            🔗 Deployment URLs
+          </button>
         </div>
 
         {activeTab === 'calls' && (
@@ -150,6 +161,12 @@ export default function Home() {
         {activeTab === 'analyze' && (
           <div className="max-w-2xl mx-auto">
             <EmotionAnalyzer />
+          </div>
+        )}
+
+        {activeTab === 'deployment' && (
+          <div className="max-w-3xl mx-auto">
+            <DeploymentURLs />
           </div>
         )}
       </main>
