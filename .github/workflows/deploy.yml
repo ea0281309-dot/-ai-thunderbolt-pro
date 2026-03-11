@@ -58,7 +58,7 @@ jobs:
       - name: Deploy frontend to Vercel
         if: ${{ env.IS_MAIN_PUSH == 'true' && env.HAS_FRONTEND == 'true' && env.HAS_VERCEL_SECRETS == 'true' }}
         run: |
-          npm install --global vercel@latest
+          npm install --global vercel@34.2.0
           vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
           vercel build --prod --token="${{ secrets.VERCEL_TOKEN }}"
           vercel deploy --prebuilt --prod --token="${{ secrets.VERCEL_TOKEN }}"
