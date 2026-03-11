@@ -9,6 +9,8 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       HAS_FRONTEND: ${{ hashFiles('package.json') != '' }}
       HAS_BACKEND: ${{ hashFiles('server/package.json') != '' }}
