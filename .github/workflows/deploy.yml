@@ -1,32 +1,102 @@
-# Deploy Workflow
-
-name: Deploy
+name: Deploy AI Thunderbolt Pro
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  deploy:
+  build-and-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
         with:
-          node-version: '14'
+          node-version: '20'
+          cache: 'npm'
 
-      - name: Install dependencies
-        run: |
-          npm install
+      - name: Install frontend dependencies
+        run: npm ci
 
-      - name: Build
-        run: |
-          npm run build
+      - name: Build frontend
+        run: npm run build
 
-      - name: Deploy
+      - name: Install backend dependencies
+        working-directory: server
+        run: npm ci
+
+      - name: Build backend
+        working-directory: server
+        run: npm run build
+
+  deploy-frontend:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel environment
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build for Vercel
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to Vercel
+        id: vercel-deploy
         run: |
-          npm run deploy
+          DEPLOY_URL=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
+          echo "url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
+          echo "✅ Frontend deployed to: $DEPLOY_URL"
+
+  deploy-backend:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Railway CLI
+        run: npm install --global @railway/cli
+
+      - name: Deploy backend to Railway
+        working-directory: server
+        run: |
+          railway up --service ai-thunderbolt-pro-backend
+          echo "✅ Backend deployed to Railway"
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
