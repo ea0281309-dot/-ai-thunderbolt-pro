@@ -1,5 +1,7 @@
 # ⚡ GitHub Copilot Quickstart - Copy & Paste
 
+Use this quickstart if you're launching AI Thunderbolt Pro from scratch or reusing the setup steps for a fresh project.
+
 ## 🚀 Launch in 5 Steps
 
 ---
@@ -21,6 +23,8 @@ Create a GitHub repository for my AI Thunderbolt Pro project with:
 ## STEP 2: Push Code to GitHub
 
 **Copy these commands (run in terminal):**
+
+Replace `YOUR_USERNAME` with your actual GitHub username before running the remote setup command.
 
 ```bash
 cd /mnt/okcomputer/output/app
