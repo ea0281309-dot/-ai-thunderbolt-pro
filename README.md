@@ -48,7 +48,7 @@ Generate the git commands to:
 **Expected Copilot Response - Copy These Commands:**
 ```bash
 # Navigate to your project folder
-cd /path/to/ai-thunderbolt-pro
+cd /path/to/your-project-folder
 
 # Initialize git
 git init
@@ -73,7 +73,7 @@ git push -u origin main
 
 ### STEP 3: Set Up GitHub Actions (Auto-Deploy)
 
-Create the workflow file at `/home/runner/work/-ai-thunderbolt-pro/-ai-thunderbolt-pro/.github/workflows/deploy.yml`.
+Create the workflow file at `.github/workflows/deploy.yml`.
 
 **Copilot Prompt:**
 ```text
@@ -310,9 +310,9 @@ router.get('/endpoint', async (req, res) => {
 ```
 
 ### 2. Follow These Conventions
-- Use **PascalCase** for components: `AgentCard.tsx`
+- Use **PascalCase** for components and component files: `AgentCard.tsx`
 - Use **camelCase** for functions: `handleClick`
-- Use **kebab-case** for files: `agent-card.tsx`
+- Use **kebab-case** for utility, helper, and other non-component files: `agent-card-utils.ts`
 - Use **UPPER_SNAKE_CASE** for constants: `API_BASE_URL`
 
 ### 3. Import Order

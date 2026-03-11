@@ -10,6 +10,11 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
+      HAS_FRONTEND: ${{ hashFiles('package.json') != '' }}
+      HAS_BACKEND: ${{ hashFiles('server/package.json') != '' }}
+      IS_MAIN_PUSH: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      HAS_VERCEL_SECRETS: ${{ secrets.VERCEL_TOKEN != '' && secrets.VERCEL_ORG_ID != '' && secrets.VERCEL_PROJECT_ID != '' }}
+      HAS_RAILWAY_SECRETS: ${{ secrets.RAILWAY_TOKEN != '' }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
       TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
@@ -26,7 +31,7 @@ jobs:
           node-version: 18
 
       - name: Install frontend dependencies
-        if: ${{ hashFiles('package.json') != '' }}
+        if: ${{ env.HAS_FRONTEND == 'true' }}
         run: |
           if [ -f package-lock.json ]; then
             npm ci
@@ -35,7 +40,7 @@ jobs:
           fi
 
       - name: Install backend dependencies
-        if: ${{ hashFiles('server/package.json') != '' }}
+        if: ${{ env.HAS_BACKEND == 'true' }}
         working-directory: server
         run: |
           if [ -f package-lock.json ]; then
@@ -45,16 +50,16 @@ jobs:
           fi
 
       - name: Build frontend
-        if: ${{ hashFiles('package.json') != '' }}
+        if: ${{ env.HAS_FRONTEND == 'true' }}
         run: npm run build --if-present
 
       - name: Build backend
-        if: ${{ hashFiles('server/package.json') != '' }}
+        if: ${{ env.HAS_BACKEND == 'true' }}
         working-directory: server
         run: npm run build --if-present
 
       - name: Deploy frontend to Vercel
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.VERCEL_TOKEN != '' && secrets.VERCEL_ORG_ID != '' && secrets.VERCEL_PROJECT_ID != '' && hashFiles('package.json') != '' }}
+        if: ${{ env.IS_MAIN_PUSH == 'true' && env.HAS_FRONTEND == 'true' && env.HAS_VERCEL_SECRETS == 'true' }}
         run: |
           npm install --global vercel@latest
           vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
@@ -65,7 +70,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Deploy backend to Railway
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.RAILWAY_TOKEN != '' && hashFiles('server/package.json') != '' }}
+        if: ${{ env.IS_MAIN_PUSH == 'true' && env.HAS_BACKEND == 'true' && env.HAS_RAILWAY_SECRETS == 'true' }}
         working-directory: server
         run: |
           npm install --global @railway/cli
