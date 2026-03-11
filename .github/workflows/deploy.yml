@@ -1,0 +1,76 @@
+name: Deploy AI Thunderbolt Pro
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      HAS_FRONTEND: ${{ hashFiles('package.json') != '' }}
+      HAS_BACKEND: ${{ hashFiles('server/package.json') != '' }}
+      IS_MAIN_PUSH: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      HAS_VERCEL_SECRETS: ${{ secrets.VERCEL_TOKEN != '' && secrets.VERCEL_ORG_ID != '' && secrets.VERCEL_PROJECT_ID != '' }}
+      HAS_RAILWAY_SECRETS: ${{ secrets.RAILWAY_TOKEN != '' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install frontend dependencies
+        if: ${{ env.HAS_FRONTEND == 'true' }}
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Install backend dependencies
+        if: ${{ env.HAS_BACKEND == 'true' }}
+        working-directory: server
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Build frontend
+        if: ${{ env.HAS_FRONTEND == 'true' }}
+        run: npm run build --if-present
+
+      - name: Build backend
+        if: ${{ env.HAS_BACKEND == 'true' }}
+        working-directory: server
+        run: npm run build --if-present
+
+      - name: Deploy frontend to Vercel
+        if: ${{ env.IS_MAIN_PUSH == 'true' && env.HAS_FRONTEND == 'true' && env.HAS_VERCEL_SECRETS == 'true' }}
+        run: |
+          npm install --global vercel@34.2.0
+          vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
+          vercel build --prod --token="${{ secrets.VERCEL_TOKEN }}"
+          vercel deploy --prebuilt --prod --token="${{ secrets.VERCEL_TOKEN }}"
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy backend to Railway
+        if: ${{ env.IS_MAIN_PUSH == 'true' && env.HAS_BACKEND == 'true' && env.HAS_RAILWAY_SECRETS == 'true' }}
+        working-directory: server
+        run: |
+          npm install --global @railway/cli
+          railway up
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
