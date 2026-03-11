@@ -300,7 +300,7 @@ Generate the complete code including:
 
 ### Fix a Bug
 
-~~~text
+```text
 I'm getting this error: [ERROR_MESSAGE]
 In file: [FILE_PATH]
 Around line: [LINE_NUMBER]
@@ -309,11 +309,11 @@ The code is:
 `[CODE_SNIPPET]`
 
 Fix this bug and explain what caused it.
-~~~
+```
 
 ### Optimize Performance
 
-~~~text
+```text
 Optimize this component for better performance:
 `[CODE_SNIPPET]`
 
@@ -325,7 +325,7 @@ Suggest improvements for:
 2. State management
 3. API calls
 4. Memory usage
-~~~
+```
 
 ---
 
