@@ -17,11 +17,6 @@ jobs:
       IS_MAIN_PUSH: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       HAS_VERCEL_SECRETS: ${{ secrets.VERCEL_TOKEN != '' && secrets.VERCEL_ORG_ID != '' && secrets.VERCEL_PROJECT_ID != '' }}
       HAS_RAILWAY_SECRETS: ${{ secrets.RAILWAY_TOKEN != '' }}
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
-      TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
-      GHL_API_KEY: ${{ secrets.GHL_API_KEY }}
-      HUBSPOT_API_KEY: ${{ secrets.HUBSPOT_API_KEY }}
 
     steps:
       - name: Checkout repository
