@@ -1,0 +1,128 @@
+.emotion-dashboard .no-call-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+}
+
+.idle-animation span {
+  font-size: 3rem;
+  animation: float 3s ease-in-out infinite;
+  display: inline-block;
+  filter: grayscale(1);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.emotion-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem 0;
+  position: relative;
+}
+
+.emotion-display::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, var(--emotion-color, #94a3b8) 0%, transparent 70%);
+  opacity: 0.1;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.emotion-icon {
+  font-size: 3.5rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 12px var(--emotion-color, #94a3b8));
+  transition: all 0.4s ease;
+}
+
+.emotion-label {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--emotion-color, #94a3b8);
+  transition: color 0.4s ease;
+}
+
+.sentiment-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sentiment-badge[data-sentiment="positive"] {
+  background: rgba(74, 222, 128, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.4);
+}
+
+.sentiment-badge[data-sentiment="neutral"] {
+  background: rgba(148, 163, 184, 0.2);
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+.sentiment-badge[data-sentiment="negative"] {
+  background: rgba(248, 113, 113, 0.2);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.4);
+}
+
+.confidence-bar {
+  margin-top: 0.5rem;
+}
+
+.confidence-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 0.4rem;
+}
+
+.confidence-track {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.confidence-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease, background 0.4s ease;
+}
+
+.emotion-history {
+  margin-top: 1rem;
+}
+
+.history-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 0.5rem;
+}
+
+.history-dots {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.history-dot {
+  font-size: 1.25rem;
+  transition: opacity 0.3s;
+  cursor: default;
+}
