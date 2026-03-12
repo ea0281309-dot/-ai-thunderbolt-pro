@@ -2,7 +2,7 @@
 
 Use this quickstart if you're launching AI Thunderbolt Pro from scratch or reusing the setup steps for a fresh project.
 
-## 🚀 Launch in 5 Steps
+## 🚀 Launch in 6 Steps
 
 ---
 
@@ -20,26 +20,34 @@ Create a GitHub repository for my AI Thunderbolt Pro project with:
 
 ---
 
-## STEP 2: Push Code to GitHub
+## STEP 2: Clone Your Repository
+
+**Copy this command (run in terminal):**
+
+```bash
+git clone https://github.com/ea0281309-dot/-ai-thunderbolt-pro.git ai-thunderbolt-pro
+cd ai-thunderbolt-pro
+```
+
+If your generated project files are in another directory, copy them into `ai-thunderbolt-pro/` before continuing.
+
+---
+
+## STEP 3: Push Code to GitHub
 
 **Copy these commands (run in terminal):**
 
-Replace the ALL_CAPS placeholders with your actual GitHub username before running these commands.
+Run these commands from inside the cloned `ai-thunderbolt-pro` directory after your project files are in place.
 
 ```bash
-cd /mnt/okcomputer/output/app
-
-git init
 git add .
 git commit -m "Initial commit: AI Thunderbolt Pro v1.0"
-git branch -M main
-git remote add origin https://github.com/YOUR_GITHUB_USERNAME/ai-thunderbolt-pro.git
 git push -u origin main
 ```
 
 ---
 
-## STEP 3: Deploy Frontend (Vercel)
+## STEP 4: Deploy Frontend (Vercel)
 
 **Copy this into Copilot Chat:**
 
@@ -63,7 +71,7 @@ vercel --prod
 
 ---
 
-## STEP 4: Deploy Backend (Railway)
+## STEP 5: Deploy Backend (Railway)
 
 **Copy this into Copilot Chat:**
 
@@ -89,7 +97,7 @@ railway up
 
 ---
 
-## STEP 5: Connect Everything
+## STEP 6: Connect Everything
 
 Replace the ALL_CAPS placeholders `YOUR_VERCEL_URL` and `YOUR_RAILWAY_URL` with your deployed app URLs, for example `https://your-app.vercel.app` and `https://your-service.up.railway.app`.
 
