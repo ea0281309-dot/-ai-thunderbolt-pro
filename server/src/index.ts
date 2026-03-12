@@ -4,14 +4,28 @@ import cors from 'cors';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map((o) => o.trim())
-  : [
-      'http://localhost:3000',
-      'http://localhost:5173',
-      // Default production frontend on Vercel; override/extend via ALLOWED_ORIGINS as needed.
-      'https://ai-thunderbolt-zs14xz6al-powershell.vercel.app',
-    ];
+function parseAllowedOrigins(value: string | undefined): string[] | null {
+  if (!value) return null;
+
+  // Split on commas, trim whitespace, ignore empty entries (e.g. trailing commas), and de-dupe.
+  const origins = value
+    .split(',')
+    .map((o) => o.trim())
+    .filter((o) => o.length > 0);
+
+  if (origins.length === 0) return null;
+
+  return Array.from(new Set(origins));
+}
+
+const allowedOrigins =
+  parseAllowedOrigins(process.env.ALLOWED_ORIGINS) ??
+  [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    // Default production frontend on Vercel; override/extend via ALLOWED_ORIGINS as needed.
+    'https://ai-thunderbolt-zs14xz6al-powershell.vercel.app',
+  ];
 
 app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
