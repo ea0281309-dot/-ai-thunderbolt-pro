@@ -60,7 +60,7 @@ npm i -g vercel
 vercel login
 ```
 
-### ====== COMMAND 4: Deploy to Vercel ======
+### Command 4: Deploy to Vercel
 
 ```bash
 vercel --prod
