@@ -1,0 +1,54 @@
+import express, { Request, Response } from 'express';
+import cors from 'cors';
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+function parseAllowedOrigins(value: string | undefined): string[] | null {
+  if (!value) return null;
+
+  // Split on commas, trim whitespace, ignore empty entries (e.g. trailing commas), and de-dupe.
+  const origins = value
+    .split(',')
+    .map((o) => o.trim())
+    .filter((o) => o.length > 0);
+
+  if (origins.length === 0) return null;
+
+  return Array.from(new Set(origins));
+}
+
+const allowedOrigins =
+  parseAllowedOrigins(process.env.ALLOWED_ORIGINS) ??
+  [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    // Default production frontend on Vercel; override/extend via ALLOWED_ORIGINS as needed.
+    'https://ai-thunderbolt-zs14xz6al-powershell.vercel.app',
+  ];
+
+app.use(cors({ origin: allowedOrigins }));
+app.use(express.json());
+
+app.get('/health', (_req: Request, res: Response) => {
+  res.json({ status: 'ok', service: 'AI Thunderbolt Pro API' });
+});
+
+app.get('/', (_req: Request, res: Response) => {
+  res.json({ message: 'AI Thunderbolt Pro API is running' });
+});
+
+const server = app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+server.on('error', (err: NodeJS.ErrnoException) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use`);
+  } else {
+    console.error('Server error:', err.message);
+  }
+  process.exit(1);
+});
+
+export default app;
