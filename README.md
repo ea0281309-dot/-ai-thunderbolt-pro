@@ -27,7 +27,7 @@ Create a GitHub repository for my AI Thunderbolt Pro project with:
 Replace the ALL_CAPS placeholders with your actual GitHub username before running these commands.
 
 ```bash
-cd /mnt/okcomputer/output/app
+cd ai-thunderbolt-pro
 
 git init
 git add .
