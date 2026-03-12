@@ -29,6 +29,8 @@ git clone https://github.com/ea0281309-dot/-ai-thunderbolt-pro.git ai-thunderbol
 cd ai-thunderbolt-pro
 ```
 
+If you created the repository under a different GitHub account, replace `ea0281309-dot` with your GitHub username.
+
 If your generated project files are in another directory, copy them into `ai-thunderbolt-pro/` before continuing.
 
 ---
