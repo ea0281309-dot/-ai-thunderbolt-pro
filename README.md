@@ -30,7 +30,7 @@ If you're using Windows Command Prompt, switch to the C drive first and then cha
 
 ```bat
 cd C:\
-cd \path\to\your\app
+cd path\to\your\app
 ```
 
 Otherwise, use the existing project directory path:
