@@ -147,3 +147,180 @@ Deploy my FRONTEND_OR_BACKEND to PLATFORM with these settings: SETTINGS
 ---
 
 **Just copy, paste, and launch! 🚀**
+
+---
+
+## 📡 API Reference (v2)
+
+Base URL: `https://YOUR_RAILWAY_URL` (or `http://localhost:3001` for local development)
+
+All v2 endpoints are prefixed with `/api/v2`.
+
+---
+
+### Health
+
+#### `GET /api/v2/health`
+
+Returns the service health status and API version.
+
+**Response `200`**
+```json
+{
+  "status": "ok",
+  "version": "v2",
+  "service": "AI Thunderbolt Pro API"
+}
+```
+
+---
+
+### Calls
+
+#### `POST /api/v2/calls/start`
+
+Start a new call session. Returns a unique session ID (`sid`) used for all subsequent call operations.
+
+**Request body** — none required
+
+**Response `201`**
+```json
+{
+  "sid": "CA1A2B3C4D5E6F",
+  "status": "active",
+  "startedAt": "2026-03-14T02:41:57.849Z",
+  "emotions": []
+}
+```
+
+---
+
+#### `POST /api/v2/calls/:sid/end`
+
+End an active call session. Records the end time and calculates the total duration in seconds.
+
+**Path parameter**
+
+| Parameter | Type   | Description              |
+|-----------|--------|--------------------------|
+| `sid`     | string | Call session ID to end   |
+
+**Response `200`**
+```json
+{
+  "sid": "CA1A2B3C4D5E6F",
+  "status": "ended",
+  "startedAt": "2026-03-14T02:41:57.849Z",
+  "endedAt": "2026-03-14T02:51:57.849Z",
+  "durationSeconds": 600,
+  "emotions": []
+}
+```
+
+**Error responses**
+
+| Status | Reason                   |
+|--------|--------------------------|
+| `404`  | Call session not found   |
+| `409`  | Call already ended       |
+
+---
+
+#### `GET /api/v2/calls/:sid`
+
+Retrieve a single call session, including its emotion history.
+
+**Path parameter**
+
+| Parameter | Type   | Description            |
+|-----------|--------|------------------------|
+| `sid`     | string | Call session ID        |
+
+**Response `200`**
+```json
+{
+  "sid": "CA1A2B3C4D5E6F",
+  "status": "active",
+  "startedAt": "2026-03-14T02:41:57.849Z",
+  "emotions": [
+    {
+      "emotion": "happy",
+      "confidence": 0.92,
+      "sentiment": "positive",
+      "timestamp": "2026-03-14T02:42:10.000Z"
+    }
+  ]
+}
+```
+
+**Error responses**
+
+| Status | Reason                 |
+|--------|------------------------|
+| `404`  | Call session not found |
+
+---
+
+#### `POST /api/v2/calls/:sid/emotion`
+
+Append an emotion data point to an active call. Intended to be called on a recurring interval by the frontend as the AI analyzes the conversation.
+
+**Path parameter**
+
+| Parameter | Type   | Description         |
+|-----------|--------|---------------------|
+| `sid`     | string | Active call session |
+
+**Request body**
+
+| Field        | Type                                   | Required | Description                         |
+|--------------|----------------------------------------|----------|-------------------------------------|
+| `emotion`    | string                                 | ✅       | Detected emotion label (e.g. `"happy"`, `"anxious"`) |
+| `confidence` | number (0–1)                           | ✅       | Model confidence score              |
+| `sentiment`  | `"positive"` \| `"negative"` \| `"neutral"` | ✅  | Sentiment category                  |
+
+```json
+{
+  "emotion": "calm",
+  "confidence": 0.87,
+  "sentiment": "neutral"
+}
+```
+
+**Response `201`**
+```json
+{
+  "emotion": "calm",
+  "confidence": 0.87,
+  "sentiment": "neutral",
+  "timestamp": "2026-03-14T02:43:00.000Z"
+}
+```
+
+**Error responses**
+
+| Status | Reason                                        |
+|--------|-----------------------------------------------|
+| `400`  | Missing required fields                       |
+| `404`  | Call session not found                        |
+| `409`  | Cannot add emotion data to an ended call      |
+
+---
+
+#### `GET /api/v2/calls`
+
+List all call sessions (active and ended).
+
+**Response `200`**
+```json
+[
+  {
+    "sid": "CA1A2B3C4D5E6F",
+    "status": "ended",
+    "startedAt": "2026-03-14T02:41:57.849Z",
+    "endedAt": "2026-03-14T02:51:57.849Z",
+    "durationSeconds": 600,
+    "emotions": []
+  }
+]
+```
