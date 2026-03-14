@@ -3,6 +3,7 @@ import cors from 'cors';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const DATABASE_URL = process.env.DATABASE_URL;
 
 const rawOrigins = process.env.ALLOWED_ORIGINS;
 const corsOrigin: string | string[] =
@@ -47,7 +48,7 @@ function generateSid(): string {
 // ---------------------------------------------------------------------------
 
 app.get('/health', (_req: Request, res: Response) => {
-  res.json({ status: 'ok', service: 'AI Thunderbolt Pro API' });
+  res.json({ status: 'ok', service: 'AI Thunderbolt Pro API', database: DATABASE_URL ? 'configured' : 'not configured' });
 });
 
 app.get('/', (_req: Request, res: Response) => {
@@ -60,7 +61,7 @@ app.get('/', (_req: Request, res: Response) => {
 
 // GET /api/v2/health
 app.get('/api/v2/health', (_req: Request, res: Response) => {
-  res.json({ status: 'ok', version: 'v2', service: 'AI Thunderbolt Pro API' });
+  res.json({ status: 'ok', version: 'v2', service: 'AI Thunderbolt Pro API', database: DATABASE_URL ? 'configured' : 'not configured' });
 });
 
 // POST /api/v2/calls/start
@@ -157,6 +158,7 @@ app.get('/api/v2/calls', (_req: Request, res: Response) => {
 if (require.main === module) {
   const server = app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+    console.log(`Database: ${DATABASE_URL ? 'configured (DATABASE_URL set)' : 'not configured (DATABASE_URL not set)'}`);
   });
 
   server.on('error', (err: NodeJS.ErrnoException) => {
