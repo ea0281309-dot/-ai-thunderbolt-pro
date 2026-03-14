@@ -66,7 +66,7 @@ vercel --prod
 ## STEP 4: Deploy Backend (Railway)
 
 The `server/railway.json` configuration is already committed and uses the
-**RAILPACK** builder. Railway will automatically run `npm install && npm run build`
+**NIXPACKS** builder. Railway will automatically run `npm install && npm run build`
 inside the `server/` directory and start the service with `npm start`
 (`node dist/index.js`).
 
