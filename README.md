@@ -58,6 +58,11 @@ Generate the complete vercel.json and deployment steps.
 ```bash
 npm i -g vercel
 vercel login
+```
+
+### Command 4: Deploy to Vercel
+
+```bash
 vercel --prod
 ```
 
