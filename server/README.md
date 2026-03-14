@@ -60,9 +60,15 @@ Equivalent to `node dist/index.js`, which serves the compiled Express app.
 |--------------------|--------------------------------------------------|--------------------------------------|
 | `PORT`             | `3001`                                           | Port the server listens on           |
 | `ALLOWED_ORIGINS`  | `http://localhost:3000,http://localhost:5173`    | Comma-separated CORS-allowed origins |
+| `DATABASE_URL`     | —                                                | PostgreSQL connection string (set via `${{Postgres-rjq8.DATABASE_URL}}` in Railway) |
 
 Set `ALLOWED_ORIGINS` to your Vercel frontend URL in the Railway service
 variables panel before deploying to production.
+
+`DATABASE_URL` is automatically populated in Railway by linking the
+`Postgres-rjq8` database service. The reference `${{Postgres-rjq8.DATABASE_URL}}`
+in `railway.json` tells Railway to inject the database connection string at
+deploy time.
 
 ### Deploy via Railway CLI
 

@@ -4,5 +4,10 @@
     "builder": "RAILPACK",
     "buildCommand": "cd server && npm ci && npm run build",
     "startCommand": "cd server && npm start"
+  },
+  "deploy": {
+    "envVars": {
+      "DATABASE_URL": "${{Postgres-rjq8.DATABASE_URL}}"
+    }
   }
 }
