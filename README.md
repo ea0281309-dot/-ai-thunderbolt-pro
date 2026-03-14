@@ -66,17 +66,31 @@ vercel --prod
 ## STEP 4: Deploy Backend (Railway)
 
 The `server/railway.json` configuration is already committed and uses the
-**RAILPACK** builder. Railway will automatically run `npm install && npm run build`
-inside the `server/` directory and start the service with `npm start`
-(`node dist/index.js`).
+**RAILPACK** builder. The service is named **illustrious-creativity** and is
+linked to the **Postgres-rjq8** database. Railway will automatically run
+`npm ci && npm run build` inside the `server/` directory (Root Directory is
+set to `/server`) and start the service with `npm start` (`node dist/index.js`).
 
-**Then run:**
+**Railway service settings:**
+
+| Setting          | Value                          |
+|------------------|--------------------------------|
+| Service name     | `illustrious-creativity`       |
+| Root Directory   | `/server`                      |
+| Builder          | RAILPACK                       |
+| Build command    | `npm ci && npm run build`      |
+| Start command    | `npm start`                    |
+| `DATABASE_URL`   | `${{Postgres-rjq8.DATABASE_URL}}` |
+
+**Backend URL:** `https://illustrious-creativity.up.railway.app`
+
+**To link and deploy via Railway CLI:**
 
 ```bash
 npm i -g @railway/cli
 railway login
 cd server
-railway link   # link to an existing Railway project (or `railway init` for new)
+railway link   # select the illustrious-creativity service
 railway up
 ```
 
@@ -86,15 +100,14 @@ Set the `ALLOWED_ORIGINS` environment variable in the Railway dashboard:
 - **Restricted access:** set `ALLOWED_ORIGINS` to a comma-separated list of
   allowed frontend URLs, e.g. `https://your-app.vercel.app`
 
-Once deployed, copy your Railway service URL from the Railway dashboard
-(it looks like `https://your-service.up.railway.app`) and use it as
-`YOUR_RAILWAY_URL` in the steps below.
+Once deployed, your Railway service URL is:
+`https://illustrious-creativity.up.railway.app`
 
 ---
 
 ## STEP 5: Connect Everything
 
-Replace the ALL_CAPS placeholders `YOUR_VERCEL_URL` and `YOUR_RAILWAY_URL` with your deployed app URLs, for example `https://your-app.vercel.app` and `https://your-service.up.railway.app`.
+Replace the ALL_CAPS placeholders `YOUR_VERCEL_URL` and `YOUR_RAILWAY_URL` with your deployed app URLs, for example `https://your-app.vercel.app` and `https://illustrious-creativity.up.railway.app`.
 
 **Copy this into Copilot Chat:**
 
@@ -112,7 +125,7 @@ Show me which files to update and what changes to make.
 
 Your AI Thunderbolt Pro is now live on:
 - **Frontend**: YOUR_VERCEL_URL
-- **Backend**: YOUR_RAILWAY_URL
+- **Backend**: https://illustrious-creativity.up.railway.app
 
 ---
 
@@ -155,7 +168,7 @@ Deploy my FRONTEND_OR_BACKEND to PLATFORM with these settings: SETTINGS
 
 ## 📡 API Reference (v2)
 
-Base URL: `https://YOUR_RAILWAY_URL` (or `http://localhost:3001` for local development)
+Base URL: `https://illustrious-creativity.up.railway.app` (or `http://localhost:3001` for local development)
 
 All v2 endpoints are prefixed with `/api/v2`.
 

@@ -28,8 +28,21 @@ npm start          # node dist/index.js
 
 ## Railway deployment
 
-The service is deployed to [Railway](https://railway.app) using the
-configuration in `server/railway.json`.
+The service **illustrious-creativity** is deployed to [Railway](https://railway.app)
+using the configuration in `server/railway.json`.
+
+**Railway service settings:**
+
+| Setting          | Value                             |
+|------------------|-----------------------------------|
+| Service name     | `illustrious-creativity`          |
+| Root Directory   | `/server`                         |
+| Builder          | RAILPACK                          |
+| Build command    | `npm ci && npm run build`         |
+| Start command    | `npm start`                       |
+| `DATABASE_URL`   | `${{Postgres-rjq8.DATABASE_URL}}` |
+
+**Backend URL:** `https://illustrious-creativity.up.railway.app`
 
 ### Builder
 
@@ -76,7 +89,7 @@ deploy time.
 npm install -g @railway/cli
 railway login
 cd server
-railway link       # link to an existing project, or use `railway init`
+railway link       # select the illustrious-creativity service
 railway up
 ```
 
