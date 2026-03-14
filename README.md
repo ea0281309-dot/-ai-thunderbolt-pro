@@ -65,17 +65,10 @@ vercel --prod
 
 ## STEP 4: Deploy Backend (Railway)
 
-**Copy this into Copilot Chat:**
-
-```text
-Deploy my Node.js backend to Railway:
-- Entry point: server/dist/index.js
-- Port: 3001
-- Build command: cd server && npm run build
-- Start command: node dist/index.js
-
-Generate the railway.json configuration.
-```
+The `server/railway.json` configuration is already committed and uses the
+**RAILPACK** builder. Railway will automatically run `npm install && npm run build`
+inside the `server/` directory and start the service with `npm start`
+(`node dist/index.js`).
 
 **Then run:**
 
@@ -83,9 +76,12 @@ Generate the railway.json configuration.
 npm i -g @railway/cli
 railway login
 cd server
-railway init
+railway link   # link to an existing Railway project (or `railway init` for new)
 railway up
 ```
+
+Set the `ALLOWED_ORIGINS` environment variable in the Railway dashboard to your
+Vercel frontend URL before going live.
 
 ---
 
