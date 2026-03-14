@@ -4,11 +4,15 @@ import cors from 'cors';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map((o) => o.trim())
-  : ['http://localhost:3000', 'http://localhost:5173'];
+const rawOrigins = process.env.ALLOWED_ORIGINS;
+const corsOrigin: string | string[] =
+  rawOrigins === '*'
+    ? '*'
+    : rawOrigins
+      ? rawOrigins.split(',').map((o) => o.trim())
+      : ['http://localhost:3000', 'http://localhost:5173'];
 
-app.use(cors({ origin: allowedOrigins }));
+app.use(cors({ origin: corsOrigin }));
 app.use(express.json());
 
 // ---------------------------------------------------------------------------

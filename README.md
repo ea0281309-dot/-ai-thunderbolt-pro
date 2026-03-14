@@ -80,8 +80,15 @@ railway link   # link to an existing Railway project (or `railway init` for new)
 railway up
 ```
 
-Set the `ALLOWED_ORIGINS` environment variable in the Railway dashboard to your
-Vercel frontend URL before going live.
+Set the `ALLOWED_ORIGINS` environment variable in the Railway dashboard:
+
+- **Global access (all origins):** set `ALLOWED_ORIGINS` to `*`
+- **Restricted access:** set `ALLOWED_ORIGINS` to a comma-separated list of
+  allowed frontend URLs, e.g. `https://your-app.vercel.app`
+
+Once deployed, copy your Railway service URL from the Railway dashboard
+(it looks like `https://your-service.up.railway.app`) and use it as
+`YOUR_RAILWAY_URL` in the steps below.
 
 ---
 
