@@ -1,1 +1,8 @@
-{\n  "$schema": "https://railway.app/railway.schema.json",\n  "build": {\n    "builder": "RAILPACK",\n    "buildCommand": "cd server && npm ci && npm run build",\n    "startCommand": "cd server && npm start"\n  }\n}
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "RAILPACK",
+    "buildCommand": "cd server && npm ci && npm run build",
+    "startCommand": "cd server && npm start"
+  }
+}
