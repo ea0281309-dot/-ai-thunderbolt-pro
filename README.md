@@ -126,7 +126,7 @@ Show me which files to update and what changes to make.
 ## ✅ DONE!
 
 Your AI Thunderbolt Pro is now live on:
-- **Frontend**: https://ai-thunderbolt-pro.vercel.app *(replace with your Vercel URL after deployment)*
+- **Frontend**: https://your-app.vercel.app *(replace with your Vercel URL after deployment)*
 - **Backend**: https://illustrious-creativity.up.railway.app ✅ (deployed, DATABASE_URL connected to Postgres-rjq8)
 
 ---
