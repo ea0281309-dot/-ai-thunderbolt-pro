@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import {
   startCall,
   endCall,
@@ -246,6 +247,7 @@ export default function App() {
           </div>
         )}
       </div>
+      <SpeedInsights />
     </>
   )
 }
