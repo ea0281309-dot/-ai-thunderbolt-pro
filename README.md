@@ -66,9 +66,9 @@ vercel --prod
 ## STEP 4: Deploy Backend (Railway)
 
 The `server/railway.json` configuration is already committed and uses the
-**RAILPACK** builder. The service is named **illustrious-creativity** and is
+**NIXPACKS** builder. The service is named **illustrious-creativity** and is
 linked to the **Postgres-rjq8** database. Railway will automatically run
-`npm ci && npm run build` inside the `server/` directory (Root Directory is
+`npm install && npm run build` inside the `server/` directory (Root Directory is
 set to `/server`) and start the service with `npm start` (`node dist/index.js`).
 
 **Railway service settings:**
@@ -77,8 +77,8 @@ set to `/server`) and start the service with `npm start` (`node dist/index.js`).
 |------------------|--------------------------------|
 | Service name     | `illustrious-creativity`       |
 | Root Directory   | `/server`                      |
-| Builder          | RAILPACK                       |
-| Build command    | `npm ci && npm run build`      |
+| Builder          | NIXPACKS                       |
+| Build command    | `npm install && npm run build` |
 | Start command    | `npm start`                    |
 | `DATABASE_URL`   | `${{Postgres-rjq8.DATABASE_URL}}` |
 
@@ -124,8 +124,8 @@ Show me which files to update and what changes to make.
 ## ✅ DONE!
 
 Your AI Thunderbolt Pro is now live on:
-- **Frontend**: YOUR_VERCEL_URL
-- **Backend**: https://illustrious-creativity.up.railway.app
+- **Frontend**: *(deploy to Vercel — see STEP 3 above)*
+- **Backend**: https://illustrious-creativity.up.railway.app ✅ (deployed, DATABASE_URL connected to Postgres-rjq8)
 
 ---
 
