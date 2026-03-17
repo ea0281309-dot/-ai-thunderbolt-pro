@@ -37,8 +37,8 @@ using the configuration in `server/railway.json`.
 |------------------|-----------------------------------|
 | Service name     | `illustrious-creativity`          |
 | Root Directory   | `/server`                         |
-| Builder          | RAILPACK                          |
-| Build command    | `npm ci && npm run build`         |
+| Builder          | NIXPACKS                          |
+| Build command    | `npm install && npm run build`    |
 | Start command    | `npm start`                       |
 | `DATABASE_URL`   | `${{Postgres-rjq8.DATABASE_URL}}` |
 
@@ -46,9 +46,10 @@ using the configuration in `server/railway.json`.
 
 ### Builder
 
-**RAILPACK** is used as the builder (set via the `build.builder` field in
-`railway.json`). RAILPACK auto-detects the Node.js project and handles
-dependency installation and compilation.
+**NIXPACKS** is used as the builder (set via the `build.builder` field in
+`railway.json`). NIXPACKS auto-detects the Node.js project and provides a
+proper Node.js environment including `npm`, handling dependency installation
+and compilation.
 
 ### Build command
 
@@ -93,4 +94,4 @@ railway link       # select the illustrious-creativity service
 railway up
 ```
 
-Railway will automatically pick up `railway.json` and use the RAILPACK builder.
+Railway will automatically pick up `railway.json` and use the NIXPACKS builder.
