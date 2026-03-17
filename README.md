@@ -41,25 +41,27 @@ git push -u origin main
 
 ## STEP 3: Deploy Frontend (Vercel)
 
-**Copy this into Copilot Chat:**
+The `client/` directory contains the React/Vite frontend. `vercel.json` is
+already configured to build from `client/` and serve the static output.
 
-```text
-Deploy my React frontend to Vercel:
-- Build command: npm run build
-- Output directory: dist
-- Install command: npm install
-- Framework: Vite
-
-Generate the complete vercel.json and deployment steps.
-```
-
-**Then run:**
+**Deploy via Vercel CLI:**
 
 ```bash
 npm i -g vercel
 vercel login
 vercel --prod
 ```
+
+**Or connect the GitHub repo in the Vercel dashboard** — it will detect
+`vercel.json` automatically.
+
+**After deploying, set the following environment variable in the Vercel dashboard:**
+
+| Variable        | Value                                              |
+|-----------------|----------------------------------------------------|
+| `VITE_API_URL`  | `https://illustrious-creativity.up.railway.app`    |
+
+**Then redeploy** so the frontend picks up the production backend URL.
 
 ---
 
@@ -124,7 +126,7 @@ Show me which files to update and what changes to make.
 ## ✅ DONE!
 
 Your AI Thunderbolt Pro is now live on:
-- **Frontend**: *(deploy to Vercel — see STEP 3 above)*
+- **Frontend**: https://your-app.vercel.app *(replace with your Vercel URL after deployment)*
 - **Backend**: https://illustrious-creativity.up.railway.app ✅ (deployed, DATABASE_URL connected to Postgres-rjq8)
 
 ---
