@@ -27,13 +27,11 @@ Create a GitHub repository for my AI Thunderbolt Pro project with:
 Replace the ALL_CAPS placeholders with your actual GitHub username before running these commands.
 
 ```bash
+git clone https://github.com/YOUR_GITHUB_USERNAME/ai-thunderbolt-pro.git
 cd ai-thunderbolt-pro
 
-git init
 git add .
 git commit -m "Initial commit: AI Thunderbolt Pro v1.0"
-git branch -M main
-git remote add origin https://github.com/YOUR_GITHUB_USERNAME/ai-thunderbolt-pro.git
 git push -u origin main
 ```
 
