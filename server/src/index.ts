@@ -36,11 +36,63 @@ interface CallRecord {
   emotions: EmotionEntry[];
 }
 
+interface EmotionPayload {
+  emotion?: string;
+  confidence?: number;
+  sentiment?: string;
+}
+
 // In-memory call store (replace with a database in production)
 const calls = new Map<string, CallRecord>();
+const validSentiments = new Set<EmotionEntry['sentiment']>(['positive', 'negative', 'neutral']);
 
 function generateSid(): string {
   return `CA${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`.toUpperCase();
+}
+
+function sendError(res: Response, status: number, error: string): Response {
+  return res.status(status).json({ error });
+}
+
+function getCallRecord(sid: string): CallRecord | null {
+  return calls.get(sid) ?? null;
+}
+
+function getSidParam(req: Request, res: Response): string | null {
+  const sid = req.params.sid.trim();
+  if (!sid) {
+    sendError(res, 400, 'sid is required');
+    return null;
+  }
+
+  return sid;
+}
+
+function validateEmotionPayload(body: EmotionPayload):
+  | { ok: true; emotion: string; confidence: number; sentiment: EmotionEntry['sentiment'] }
+  | { ok: false; error: string } {
+  if (typeof body.emotion !== 'string' || !body.emotion.trim()) {
+    return { ok: false, error: 'emotion must be a non-empty string' };
+  }
+
+  if (typeof body.confidence !== 'number' || !Number.isFinite(body.confidence)) {
+    return { ok: false, error: 'confidence must be a finite number between 0 and 1' };
+  }
+
+  if (body.confidence < 0 || body.confidence > 1) {
+    return { ok: false, error: 'confidence must be a finite number between 0 and 1' };
+  }
+
+  if (typeof body.sentiment !== 'string' || !validSentiments.has(body.sentiment as EmotionEntry['sentiment'])) {
+    return { ok: false, error: 'sentiment must be one of: positive, negative, neutral' };
+  }
+
+  return {
+    ok: true,
+    emotion: body.emotion.trim(),
+    confidence: body.confidence,
+    sentiment: body.sentiment as EmotionEntry['sentiment'],
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -79,32 +131,36 @@ app.post('/api/v2/calls/start', (req: Request, res: Response) => {
 
 // POST /api/v2/calls/:sid/end
 app.post('/api/v2/calls/:sid/end', (req: Request, res: Response) => {
-  const { sid } = req.params;
-  const record = calls.get(sid);
+  const sid = getSidParam(req, res);
+  if (!sid) return;
+
+  const record = getCallRecord(sid);
   if (!record) {
-    res.status(404).json({ error: 'Call not found', sid });
+    sendError(res, 404, 'Call not found');
     return;
   }
   if (record.status === 'ended') {
-    res.status(409).json({ error: 'Call already ended', sid });
+    sendError(res, 409, 'Call already ended');
     return;
   }
-  const endedAt = new Date().toISOString();
+  const endedAt = new Date();
   const durationSeconds = Math.round(
-    (new Date(endedAt).getTime() - new Date(record.startedAt).getTime()) / 1000,
+    (endedAt.getTime() - new Date(record.startedAt).getTime()) / 1000,
   );
   record.status = 'ended';
-  record.endedAt = endedAt;
+  record.endedAt = endedAt.toISOString();
   record.durationSeconds = durationSeconds;
   res.json(record);
 });
 
 // GET /api/v2/calls/:sid
 app.get('/api/v2/calls/:sid', (req: Request, res: Response) => {
-  const { sid } = req.params;
-  const record = calls.get(sid);
+  const sid = getSidParam(req, res);
+  if (!sid) return;
+
+  const record = getCallRecord(sid);
   if (!record) {
-    res.status(404).json({ error: 'Call not found', sid });
+    sendError(res, 404, 'Call not found');
     return;
   }
   res.json(record);
@@ -112,38 +168,28 @@ app.get('/api/v2/calls/:sid', (req: Request, res: Response) => {
 
 // POST /api/v2/calls/:sid/emotion
 app.post('/api/v2/calls/:sid/emotion', (req: Request, res: Response) => {
-  const { sid } = req.params;
-  const record = calls.get(sid);
+  const sid = getSidParam(req, res);
+  if (!sid) return;
+
+  const record = getCallRecord(sid);
   if (!record) {
-    res.status(404).json({ error: 'Call not found', sid });
+    sendError(res, 404, 'Call not found');
     return;
   }
   if (record.status === 'ended') {
-    res.status(409).json({ error: 'Cannot add emotion data to an ended call', sid });
+    sendError(res, 409, 'Cannot add emotion data to an ended call');
     return;
   }
-  const { emotion, confidence, sentiment } = req.body as {
-    emotion?: string;
-    confidence?: number;
-    sentiment?: 'positive' | 'negative' | 'neutral';
-  };
-  const validSentiments = ['positive', 'negative', 'neutral'];
-  if (!emotion || typeof emotion !== 'string') {
-    res.status(400).json({ error: 'emotion must be a non-empty string' });
-    return;
-  }
-  if (typeof confidence !== 'number' || confidence < 0 || confidence > 1) {
-    res.status(400).json({ error: 'confidence must be a number between 0 and 1' });
-    return;
-  }
-  if (!sentiment || !validSentiments.includes(sentiment)) {
-    res.status(400).json({ error: 'sentiment must be one of: positive, negative, neutral' });
+
+  const validation = validateEmotionPayload(req.body as EmotionPayload);
+  if (!validation.ok) {
+    sendError(res, 400, validation.error);
     return;
   }
   const entry: EmotionEntry = {
-    emotion,
-    confidence,
-    sentiment,
+    emotion: validation.emotion,
+    confidence: validation.confidence,
+    sentiment: validation.sentiment,
     timestamp: new Date().toISOString(),
   };
   record.emotions.push(entry);

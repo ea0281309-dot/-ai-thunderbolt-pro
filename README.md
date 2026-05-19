@@ -174,6 +174,8 @@ Base URL: `https://illustrious-creativity.up.railway.app` (or `http://localhost:
 
 All v2 endpoints are prefixed with `/api/v2`.
 
+All client errors return JSON in the form `{ "error": "<message>" }`.
+
 ---
 
 ### Health
@@ -187,7 +189,8 @@ Returns the service health status and API version.
 {
   "status": "ok",
   "version": "v2",
-  "service": "AI Thunderbolt Pro API"
+  "service": "AI Thunderbolt Pro API",
+  "database": "configured"
 }
 ```
 
@@ -294,7 +297,7 @@ Append an emotion data point to an active call. Intended to be called on a recur
 | Field        | Type                                   | Required | Description                         |
 |--------------|----------------------------------------|----------|-------------------------------------|
 | `emotion`    | string                                 | ✅       | Detected emotion label (e.g. `"happy"`, `"anxious"`) |
-| `confidence` | number (0–1)                           | ✅       | Model confidence score              |
+| `confidence` | number (finite, 0–1)                   | ✅       | Model confidence score              |
 | `sentiment`  | `"positive"` \| `"negative"` \| `"neutral"` | ✅  | Sentiment category                  |
 
 ```json
@@ -319,7 +322,7 @@ Append an emotion data point to an active call. Intended to be called on a recur
 
 | Status | Reason                                        |
 |--------|-----------------------------------------------|
-| `400`  | Missing required fields                       |
+| `400`  | Missing or invalid required fields            |
 | `404`  | Call session not found                        |
 | `409`  | Cannot add emotion data to an ended call      |
 
