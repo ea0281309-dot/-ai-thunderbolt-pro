@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { Analytics } from '@vercel/analytics/react'
 import {
   startCall,
@@ -9,6 +9,50 @@ import {
 } from './api'
 
 type Sentiment = 'positive' | 'negative' | 'neutral'
+
+const DEFAULT_EMOTIONS = [
+  'admiration',
+  'anger',
+  'anxiety',
+  'calm',
+  'confusion',
+  'curiosity',
+  'delight',
+  'disappointment',
+  'disgust',
+  'fear',
+  'frustration',
+  'gratitude',
+  'joy',
+  'nervousness',
+  'relief',
+  'sadness',
+  'surprise',
+  'neutral',
+] as const
+
+const MAX_EMOTION_SUGGESTIONS = 6
+
+function buildEmotionSuggestions(
+  calls: CallRecord[] | null,
+  activeCall: CallRecord | null,
+): string[] {
+  const suggestions = new Map<string, string>()
+  const addSuggestion = (value: string) => {
+    const label = value.trim()
+    if (!label) return
+    const key = label.toLowerCase()
+    if (!suggestions.has(key)) {
+      suggestions.set(key, label)
+    }
+  }
+
+  DEFAULT_EMOTIONS.forEach(addSuggestion)
+  activeCall?.emotions.forEach(({ emotion }) => addSuggestion(emotion))
+  calls?.forEach(call => call.emotions.forEach(({ emotion }) => addSuggestion(emotion)))
+
+  return Array.from(suggestions.values())
+}
 
 export default function App() {
   const [activeCall, setActiveCall] = useState<CallRecord | null>(null)
@@ -22,6 +66,19 @@ export default function App() {
   const [sentiment, setSentiment] = useState<Sentiment>('positive')
   const [emotionLoading, setEmotionLoading] = useState(false)
   const [emotionSuccess, setEmotionSuccess] = useState(false)
+
+  const emotionSuggestions = useMemo(
+    () => buildEmotionSuggestions(calls, activeCall),
+    [calls, activeCall],
+  )
+  const filteredEmotionSuggestions = useMemo(() => {
+    const query = emotion.trim().toLowerCase()
+    return emotionSuggestions
+      .filter(suggestion =>
+        query ? suggestion.toLowerCase().includes(query) : true,
+      )
+      .slice(0, MAX_EMOTION_SUGGESTIONS)
+  }, [emotion, emotionSuggestions])
 
   const setErrorMessage = (err: unknown) =>
     setError(err instanceof Error ? err.message : String(err))
@@ -61,11 +118,31 @@ export default function App() {
     async (e: React.FormEvent) => {
       e.preventDefault()
       if (!activeCall || !emotion.trim()) return
+      const callSid = activeCall.sid
       setError(null)
       setEmotionLoading(true)
       setEmotionSuccess(false)
       try {
-        await addEmotion(activeCall.sid, emotion.trim(), confidence, sentiment)
+        const savedEmotion = await addEmotion(
+          callSid,
+          emotion.trim(),
+          confidence,
+          sentiment,
+        )
+        setActiveCall(prev =>
+          prev && prev.sid === callSid
+            ? { ...prev, emotions: [...prev.emotions, savedEmotion] }
+            : prev,
+        )
+        setCalls(prev =>
+          prev
+            ? prev.map(call =>
+                call.sid === callSid
+                  ? { ...call, emotions: [...call.emotions, savedEmotion] }
+                  : call,
+              )
+            : prev,
+        )
         setEmotion('')
         setConfidence(0.8)
         setSentiment('positive')
@@ -142,7 +219,7 @@ export default function App() {
           <h2>Log Emotion</h2>
           <form onSubmit={handleAddEmotion}>
             <div className="form-row">
-              <div className="form-group">
+              <div className="form-group form-group--autocomplete">
                 <label htmlFor="emotion">Emotion</label>
                 <input
                   id="emotion"
@@ -150,8 +227,15 @@ export default function App() {
                   placeholder="e.g. joy, anger, calm"
                   value={emotion}
                   onChange={e => setEmotion(e.target.value)}
+                  list="emotion-suggestions"
+                  autoComplete="off"
                   required
                 />
+                <datalist id="emotion-suggestions">
+                  {filteredEmotionSuggestions.map(suggestion => (
+                    <option key={suggestion} value={suggestion} />
+                  ))}
+                </datalist>
               </div>
 
               <div className="form-group" style={{ flex: '0 1 120px' }}>
