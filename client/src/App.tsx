@@ -251,17 +251,18 @@ export default function App() {
   }, [activeCall, calls]);
 
   const emotionSuggestions = useMemo(() => {
+    const query = emotion.trim().toLowerCase();
     const candidates = [...DEFAULT_EMOTIONS, ...recentEmotionLabels];
     const seen = new Set<string>();
     return candidates.filter((value) => {
       const key = value.trim().toLowerCase();
-      if (!key || seen.has(key)) {
+      if (!key || seen.has(key) || (query && !key.includes(query))) {
         return false;
       }
       seen.add(key);
       return true;
     });
-  }, [recentEmotionLabels]);
+  }, [emotion, recentEmotionLabels]);
 
   const resetEmotionForm = useCallback(() => {
     setEmotion('');
@@ -490,6 +491,7 @@ export default function App() {
                   <span className="field-label">Emotion</span>
                   <input
                     list="emotion-suggestions"
+                    autoComplete="off"
                     type="text"
                     value={emotion}
                     onChange={(event) => {
