@@ -264,6 +264,15 @@ export default function App() {
     });
   }, [emotion, recentEmotionLabels]);
 
+  const filteredEmotionSuggestions = useMemo(() => {
+    const query = emotion.trim().toLowerCase();
+    if (!query) {
+      return emotionSuggestions;
+    }
+
+    return emotionSuggestions.filter((value) => value.trim().toLowerCase().includes(query));
+  }, [emotion, emotionSuggestions]);
+
   const resetEmotionForm = useCallback(() => {
     setEmotion('');
     setConfidence('0.8');
@@ -499,6 +508,7 @@ export default function App() {
                       setEmotionErrors((previous) => ({ ...previous, emotion: undefined }));
                     }}
                     placeholder="e.g. calm, curious, frustrated"
+                    autoComplete="off"
                     aria-invalid={Boolean(emotionErrors.emotion)}
                     aria-describedby={emotionErrors.emotion ? 'emotion-error' : undefined}
                   />
@@ -562,7 +572,7 @@ export default function App() {
             </form>
 
             <datalist id="emotion-suggestions">
-              {emotionSuggestions.map((value) => (
+              {filteredEmotionSuggestions.map((value) => (
                 <option key={value} value={value} />
               ))}
             </datalist>
