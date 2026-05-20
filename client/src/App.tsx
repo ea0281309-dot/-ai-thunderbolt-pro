@@ -94,8 +94,14 @@ function Banner({ banner }: { banner: BannerState }) {
     return null;
   }
 
+  const isError = banner.tone === 'error';
+
   return (
-    <div className={`banner banner-${banner.tone}`} role={banner.tone === 'error' ? 'alert' : 'status'} aria-live="polite">
+    <div
+      className={`banner banner-${banner.tone}`}
+      role={isError ? 'alert' : 'status'}
+      aria-live={isError ? 'assertive' : 'polite'}
+    >
       {banner.message}
     </div>
   );
