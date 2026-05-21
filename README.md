@@ -49,6 +49,11 @@ already configured to build from `client/` and serve the static output.
 ```bash
 npm i -g vercel
 vercel login
+```
+
+### Command 4: Deploy to Vercel
+
+```bash
 vercel --prod
 ```
 
