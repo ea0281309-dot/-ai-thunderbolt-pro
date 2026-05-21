@@ -26,6 +26,15 @@ Create a GitHub repository for my AI Thunderbolt Pro project with:
 
 Replace the ALL_CAPS placeholders with your actual GitHub username before running these commands.
 
+If you're using Windows Command Prompt, switch to the C drive first and then change into your app folder:
+
+```bat
+cd C:\
+cd path\to\your\app
+```
+
+Otherwise, use the existing project directory path:
+
 ```bash
 cd ai-thunderbolt-pro
 
